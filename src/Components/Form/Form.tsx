@@ -1,18 +1,13 @@
 import React, { FormEvent, useRef, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 
 const Form = () => {
-  const [person, setPerson] = useState({
-    name: "",
-    age: 0,
-  });
+  const { register, handleSubmit } = useForm();
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    console.log(person);
-  };
+  const onSubmit = (data: FieldValues) => console.log(data);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       {/* All below was made possible with the following shortcut:
           "div.mb-3>label.form-label+input.form-control"  
       */}
@@ -21,10 +16,7 @@ const Form = () => {
           Name
         </label>
         <input
-          value={person.name}
-          onChange={(event) =>
-            setPerson({ ...person, name: event.target.value })
-          }
+          {...register("name")}
           id="name"
           type="text"
           className="form-control"
@@ -35,10 +27,7 @@ const Form = () => {
           Age
         </label>
         <input
-          value={person.age}
-          onChange={(event) =>
-            setPerson({ ...person, age: parseInt(event.target.value) })
-          }
+          {...register("age")}
           id="age"
           type="number"
           className="form-control"
